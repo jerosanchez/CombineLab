@@ -20,5 +20,15 @@ example(of: "collect", action: {
             print("Received value: ", $0)
         })
         .store(in: &subscriptions)
+})
+
+example(of: "map", action: {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .spellOut
     
+    [123, 4, 56].publisher
+        .map {
+            formatter.string(for: NSNumber(integerLiteral: $0)) ?? ""}
+        .sink(receiveValue: { print("Received value: ", $0) })
+        .store(in: &subscriptions)
 })

@@ -10,6 +10,6 @@ This work is based on the book:
 
 List of playgrounds:
 
-- **Publishers and Subscribers**, on the fundamentals of the Combine framework.
+- **Fundamentals**, on the basics of publishers and subscribers.
 
-(more to come)
+(...more to come)

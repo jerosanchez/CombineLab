@@ -32,3 +32,18 @@ example(of: "map", action: {
         .sink(receiveValue: { print("Received value: ", $0) })
         .store(in: &subscriptions)
 })
+
+example(of: "map with key paths", action: {
+    let publisher = PassthroughSubject<Coordinate, Never>()
+    
+    publisher
+        // There are versions of map that can map up to
+        // three different key paths
+        .map(\.x, \.y)
+        .sink(receiveValue: {
+            print("Received value: (\($0), \($1)), is in quadrant \(quadrantOf(x: $0, y: $1))")})
+        .store(in: &subscriptions)
+    
+    publisher.send(Coordinate(x: 10, y: -8))
+    publisher.send(Coordinate(x: 0, y: 5))
+})

@@ -11,5 +11,6 @@ This work is based on the book:
 List of playgrounds:
 
 - **Fundamentals**, on the basics of publishers and subscribers.
+- **Transforming operator**, on operators that transform the values downstream.
 
 (...more to come)

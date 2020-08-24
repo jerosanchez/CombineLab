@@ -113,3 +113,19 @@ example(of: "replaceNil", action: {
         // While the coalescing operator ?? can return a new nil,
         // the replaceNil() operator does not
 })
+
+example(of: "replaceEmpty(with:)", action: {
+    // An Empty publishers completes immediately,
+    // i.e. does not emit any value
+    let empty = Empty<Int, Never>()
+    
+    empty
+        // If receives a completion event withou having emitted any value,
+        // this operator emits at least this value and then completes
+        .replaceEmpty(with: 1)
+        
+        .sink(
+            receiveCompletion: { print("Completed with: ", $0) },
+            receiveValue: { print("Received value: ", $0) })
+        .store(in: &subscriptions)
+})

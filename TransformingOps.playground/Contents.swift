@@ -58,3 +58,34 @@ example(of: "tryMap", action: {
         .store(in: &subscriptions)
 })
 
+example(of: "flatMap", action: {
+    let charlotte = Chatter(name: "Charlotte", message: "Hi, I'm Charlotte!")
+    let james = Chatter(name: "James", message: "Hi, I'm James!")
+    
+    let chat = CurrentValueSubject<Chatter, Never>(charlotte)
+    
+    chat
+        // To keep memory footprint low, we can set the max number of
+        // publishers that can be "flatten" in the same stream;
+        // default maxPublishers value in .unlimited
+        .flatMap(maxPublishers: .max(2))
+            { $0.message }
+        .sink(receiveValue: { print($0) })
+        .store(in: &subscriptions)
+    
+    charlotte.message.value = "How's it going?"
+    
+    // We add a second publisher to the stream, i.e.
+    // values to both charlotte.message and james.message are now
+    // merged ("flaten") in the same value stream
+    chat.value = james
+    
+    james.message.value = "James: Doing great. You?"
+    charlotte.message.value = "Charlotte: I'm doing fine, thanks."
+    
+    let morgan = Chatter(name: "Morgan", message: "Hey guys, what are you up to?")
+    chat.value = morgan  // try to join conversation
+    
+    // Since maxPublishers is 2, Morgan message is never displayed
+    charlotte.message.value = "Charlotte: Did you hear something?"
+})

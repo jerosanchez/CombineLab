@@ -47,3 +47,14 @@ example(of: "map with key paths", action: {
     publisher.send(Coordinate(x: 10, y: -8))
     publisher.send(Coordinate(x: 0, y: 5))
 })
+
+example(of: "tryMap", action: {
+    Just("directory name that does not exist")
+        .tryMap {
+            try FileManager.default.contentsOfDirectory(atPath: $0)}
+        .sink(
+            receiveCompletion: { print("Completed with: ", $0) },
+            receiveValue: { print("Contents of file: ", $0) })
+        .store(in: &subscriptions)
+})
+

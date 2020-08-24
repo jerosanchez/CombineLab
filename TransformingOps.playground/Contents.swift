@@ -94,3 +94,22 @@ example(of: "flatMap", action: {
     // Since maxPublishers is 2, Morgan messages are ignored
     charlotte.message.value = "Charlotte: Did you hear something?"
 })
+
+example(of: "replaceNil", action: {
+    ["A", nil, "B"].publisher
+        .replaceNil(with: "-")
+        
+        // replaceNil() does not change the optional nature of the values,
+        // just replaces nil values with something else;
+        // thus, to avoid the "Expression implicitly coerced from 'String?' to 'Any'" warning
+        // we just map the output of replaceNil, force unwrapping the values
+        // (at this point we know there'll never arrive nil values)
+        .map { $0! }
+        
+        .sink(receiveValue: { print("Received value: ", $0) })
+        
+        .store(in: &subscriptions)
+    
+        // While the coalescing operator ?? can return a new nil,
+        // the replaceNil() operator does not
+})

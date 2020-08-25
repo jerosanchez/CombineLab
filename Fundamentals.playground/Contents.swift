@@ -1,19 +1,6 @@
 import Foundation
 import Combine
 
-// Based on Combine: Asynchronous Programming with Swift book
-// By the raywenderlich.com Tutorial Team
-
-// Publishers and Subscribers
-
-// MARK: - Helpers
-
-public func example(of description: String,
-                    action: () -> Void) {
-  print("\n——— Example of:", description)
-  action()
-}
-
 var subscriptions = Set<AnyCancellable>()
 
 // MARK: - Examples

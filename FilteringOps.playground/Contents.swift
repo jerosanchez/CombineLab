@@ -100,3 +100,15 @@ example(of: "dropFirst", action: {
         .sink(receiveValue: { print("Received values: ", $0) })
         .store(in: &subscriptions)
 })
+
+example(of: "drop(while:)", action: {
+    let numbers = (1...10).publisher
+    
+    numbers
+        .drop(while: { $0 % 5 != 0 })  // Start emitting when the first multiple of 5 is found
+        
+        .collect()
+        .sink(receiveValue: { print("Received values: ", $0) })
+        .store(in: &subscriptions)
+
+})

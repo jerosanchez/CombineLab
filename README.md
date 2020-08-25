@@ -2,7 +2,7 @@
 
 A series of playgrounds to learn how Combine works.
 
-Combine is the **native reactive programming API** for Swift developed by Apple. It aims to replace the various asynchronous programming mechanisms existing in the different Apple's plataforms (`NotificationCenter`, closures, delegates, etc.), as an alternative to other third-party frameworks such as RxSwift.
+Combine is the **native reactive programming API** for Swift that was developed by Apple. It aims to replace the various asynchronous programming mechanisms existing in the different Apple's plataforms (`NotificationCenter`, closures, delegates, etc.), as an alternative to other third-party frameworks such as RxSwift.
 
 This work is based on the book:
 
@@ -11,6 +11,7 @@ This work is based on the book:
 List of playgrounds:
 
 - **Fundamentals**, on the basics of publishers and subscribers.
-- **Transforming operator**, on operators that transform the values downstream.
+- **TransformingOps**, on operators that transform values downstream.
+- **FilteringOps**, on operators that filter values downstream.
 
 (...more to come)

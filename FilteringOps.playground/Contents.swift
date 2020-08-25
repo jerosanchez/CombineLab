@@ -32,3 +32,15 @@ example(of: "removeDuplicates", action: {
         .sink(receiveValue: { print($0) })
         .store(in: &subscriptions)
 })
+
+example(of: "compactMap", action: {
+    let strings = ["a", "1.24", "3", "def", "45", "0.23"].publisher
+    
+    strings
+        // As its Swift counterpart, it removes nil values from the stream
+        .compactMap { Float($0) }
+    
+        .collect()
+        .sink(receiveValue: { print("Received values: ", $0) })
+        .store(in: &subscriptions)
+})

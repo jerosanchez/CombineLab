@@ -89,3 +89,14 @@ example(of: "last(where:)", action: {
     // If the publisher is a PassthroughSubject, i.e. we are manually emitting values,
     // remember to complete the sequence so that last() can finish
 })
+
+example(of: "dropFirst", action: {
+    let numbers = (1...10).publisher
+    
+    numbers
+        .dropFirst(8)
+        
+        .collect()
+        .sink(receiveValue: { print("Received values: ", $0) })
+        .store(in: &subscriptions)
+})

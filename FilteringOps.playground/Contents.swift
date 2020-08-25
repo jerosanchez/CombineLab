@@ -58,3 +58,17 @@ example(of: "ignoreOutput", action: {
                 print("Received values: ", $0) })  // This should never execute
         .store(in: &subscriptions)
 })
+
+example(of: "first(where:)", action: {
+    let numbers = (1...9).publisher
+    
+    numbers
+//        .print("numbers")  // Verify first() sends a cancel event as soon as it matches
+        .first(where: { $0 % 2 == 0 })  // First even number
+        
+        .sink(
+            receiveCompletion: {
+                print("Completed with: ", $0) },
+            receiveValue: { print("Received value: ", $0) })
+        .store(in: &subscriptions)
+})

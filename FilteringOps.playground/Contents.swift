@@ -72,3 +72,20 @@ example(of: "first(where:)", action: {
             receiveValue: { print("Received value: ", $0) })
         .store(in: &subscriptions)
 })
+
+example(of: "last(where:)", action: {
+    let numbers = (1...9).publisher
+    
+    numbers
+//        .print("numbers")  // Verify last() waits until completion to emit the value
+        .last(where: { $0 % 2 == 0 })  // Last even number
+        
+        .sink(
+            receiveCompletion: {
+                print("Completed with: ", $0) },
+            receiveValue: { print("Received value: ", $0) })
+        .store(in: &subscriptions)
+    
+    // If the publisher is a PassthroughSubject, i.e. we are manually emitting values,
+    // remember to complete the sequence so that last() can finish
+})

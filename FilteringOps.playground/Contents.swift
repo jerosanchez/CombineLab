@@ -29,7 +29,7 @@ example(of: "removeDuplicates", action: {
         
         .collect()
         .map { $0.joined(separator: " ") }
-        .sink(receiveValue: { print($0) })
+        .sink(receiveValue: { print("Received words: ", $0) })
         .store(in: &subscriptions)
 })
 
@@ -42,5 +42,19 @@ example(of: "compactMap", action: {
     
         .collect()
         .sink(receiveValue: { print("Received values: ", $0) })
+        .store(in: &subscriptions)
+})
+
+example(of: "ignoreOutput", action: {
+    let numbers = (1...10_000).publisher
+    
+    numbers
+        .ignoreOutput()
+        
+        .sink(
+            receiveCompletion: {
+                print("Completed with: ", $0) },
+            receiveValue: {
+                print("Received values: ", $0) })  // This should never execute
         .store(in: &subscriptions)
 })

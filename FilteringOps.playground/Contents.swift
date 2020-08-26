@@ -112,3 +112,24 @@ example(of: "drop(while:)", action: {
         .store(in: &subscriptions)
 
 })
+
+example(of: "drop(untilOutputFrom:)", action: {
+    let isReady = PassthroughSubject<Void, Never>()
+    let taps = PassthroughSubject<Int, Never>()
+    
+    taps
+    .drop(untilOutputFrom: isReady)
+    
+    .collect()
+    .sink(receiveValue: { print("Received values: ", $0) })
+    .store(in: &subscriptions)
+    
+    (1...5).forEach { n in
+        taps.send(n)
+        if n == 3 {
+            isReady.send()
+        }
+    }
+    
+    taps.send(completion: .finished)
+})

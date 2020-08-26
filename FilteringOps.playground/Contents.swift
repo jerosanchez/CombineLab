@@ -118,11 +118,11 @@ example(of: "drop(untilOutputFrom:)", action: {
     let taps = PassthroughSubject<Int, Never>()
     
     taps
-    .drop(untilOutputFrom: isReady)
-    
-    .collect()
-    .sink(receiveValue: { print("Received values: ", $0) })
-    .store(in: &subscriptions)
+        .drop(untilOutputFrom: isReady)
+        
+        .collect()
+        .sink(receiveValue: { print("Received values: ", $0) })
+        .store(in: &subscriptions)
     
     (1...5).forEach { n in
         taps.send(n)
@@ -151,4 +151,46 @@ example(of: "prefix", action: {
             receiveValue: {
                 print("Received values: ", $0) })
         .store(in: &subscriptions)
+})
+
+example(of: "prefix(while:)", action: {
+    let numbers = (1...10).publisher
+    
+    numbers
+        .prefix(while: { $0 < 5 })
+    
+        .collect()
+        .sink(
+            receiveCompletion: {
+                print("Completed with: ", $0) // this operator is lazy, too
+        },
+            receiveValue: {
+                print("Received values: ", $0) })
+        .store(in: &subscriptions)
+})
+
+example(of: "prefix(untilOutputFrom:)", action: {
+    let isReady = PassthroughSubject<Void, Never>()
+    let taps = PassthroughSubject<Int, Never>()
+    
+    taps
+        .prefix(untilOutputFrom: isReady)
+    
+        .collect()
+        .sink(
+            receiveCompletion: {
+                print("Completed with: ", $0) // this operator is lazy, too
+        },
+            receiveValue: {
+                print("Received values: ", $0) })
+        .store(in: &subscriptions)
+    
+    (1...5).forEach { n in
+        taps.send(n)
+        if n == 2 {
+            isReady.send()
+        }
+    }
+    
+    taps.send(completion: .finished)
 })

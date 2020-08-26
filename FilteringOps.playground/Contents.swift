@@ -133,3 +133,22 @@ example(of: "drop(untilOutputFrom:)", action: {
     
     taps.send(completion: .finished)
 })
+
+example(of: "prefix", action: {
+    let numbers = (1...10).publisher
+    
+    numbers
+        // The prefix operator does the opposite than drop: it continues
+        // emitting values until the condition is met, ignoring the rest;
+        // it also has the same variants as drop (see below)
+        .prefix(2)
+    
+        .collect()
+        .sink(
+            receiveCompletion: {
+                print("Completed with: ", $0) // this operator is lazy, terminates asap
+        },
+            receiveValue: {
+                print("Received values: ", $0) })
+        .store(in: &subscriptions)
+})
